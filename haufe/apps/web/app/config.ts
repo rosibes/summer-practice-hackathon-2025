@@ -1,0 +1,1 @@
+export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://54.152.157.19:3001'; 
