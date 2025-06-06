@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useCallback } from "react";
 import axios from "axios";
 
 export type User = {
@@ -25,67 +25,74 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
-    const checkAuth = async () => {
+    const checkAuth = useCallback(async () => {
         const token = localStorage.getItem("token");
-        console.log("Checking auth with token:", token);
 
         if (!token) {
-            console.log("No token found");
-            setIsAuthenticated(false);
             setUser(null);
+            setIsAuthenticated(false);
+            setIsLoading(false);
             return false;
         }
 
         try {
-            console.log("Making request to /me with token");
-            const response = await axios.get(`http://localhost:3001/api/v1/user/me`, {
+            const response = await axios.get(`http://localhost:3001/api/v1/users/me`, {
                 headers: {
                     Authorization: `${token}`
                 }
             });
-            console.log("Auth check response:", response.data);
 
             const { userId, email, username } = response.data;
-            setUser({
+            const userData = {
                 id: userId,
                 email,
                 username
-            });
+            };
+
+            setUser(userData);
             setIsAuthenticated(true);
+            setIsLoading(false);
             return true;
-        } catch (error) {
-            console.error("Auth check failed:", error);
-            localStorage.removeItem("token");
-            setUser(null);
-            setIsAuthenticated(false);
+        } catch (error: any) {
+            if (error.response?.status === 401 || error.response?.status === 403) {
+                localStorage.removeItem("token");
+                setUser(null);
+                setIsAuthenticated(false);
+            }
+            setIsLoading(false);
             return false;
         }
-    };
-
-    useEffect(() => {
-        checkAuth().finally(() => {
-            setIsLoading(false);
-        });
     }, []);
 
-    const login = (token: string, userData: User) => {
-        console.log("Logging in with token:", token);
+    useEffect(() => {
+        checkAuth();
+    }, [checkAuth]);
+
+    const login = useCallback((token: string, userData: User) => {
         localStorage.setItem("token", token);
         setUser(userData);
         setIsAuthenticated(true);
-    }
+        setIsLoading(false);
+    }, []);
 
-    const logout = () => {
-        console.log("Logging out");
+    const logout = useCallback(() => {
         localStorage.removeItem("token");
         setUser(null);
         setIsAuthenticated(false);
-    }
+        setIsLoading(false);
+    }, []);
+
+    const value = {
+        user,
+        isAuthenticated,
+        isLoading,
+        login,
+        logout,
+        checkAuth
+    };
 
     return (
-        <AuthContext.Provider
-            value={{ user, isAuthenticated, isLoading, login, logout, checkAuth }
-            }>
+        <AuthContext.Provider value={value}>
             {children}
         </AuthContext.Provider>
     );
