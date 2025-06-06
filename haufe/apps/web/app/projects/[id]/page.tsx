@@ -18,7 +18,13 @@ interface Project {
     userId: string;
 }
 
-export default function ProjectDetails({ params }: { params: { id: string } }) {
+interface PageProps {
+    params: {
+        id: string;
+    };
+}
+
+export default function ProjectDetails({ params }: PageProps) {
     const [project, setProject] = useState<Project | null>(null);
     const [loading, setLoading] = useState(true);
     const router = useRouter();

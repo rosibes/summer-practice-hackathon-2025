@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState, use } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -17,8 +17,13 @@ interface Project {
     userId: string;
 }
 
-export default function EditProject({ params }: { params: Promise<{ id: string }> }) {
-    const resolvedParams = use(params);
+interface PageProps {
+    params: {
+        id: string;
+    };
+}
+
+export default function EditProject({ params }: PageProps) {
     const [project, setProject] = useState<Project | null>(null);
     const [loading, setLoading] = useState(true);
     const [formData, setFormData] = useState({
@@ -46,7 +51,7 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
                     return;
                 }
 
-                const response = await axios.get(`http://localhost:3001/api/v1/projects/${resolvedParams.id}`, {
+                const response = await axios.get(`http://localhost:3001/api/v1/projects/${params.id}`, {
                     headers: {
                         Authorization: `${token}`
                     },
@@ -78,7 +83,7 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
         };
 
         fetchData();
-    }, [resolvedParams.id, router, checkAuth]);
+    }, [params.id, router, checkAuth]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -90,7 +95,7 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
             }
 
             await axios.put(
-                `http://localhost:3001/api/v1/projects/${resolvedParams.id}`,
+                `http://localhost:3001/api/v1/projects/${params.id}`,
                 formData,
                 {
                     headers: {
@@ -101,7 +106,7 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
             );
 
             toast.success("Project updated successfully");
-            router.push(`/projects/${resolvedParams.id}`);
+            router.push(`/projects/${params.id}`);
         } catch (error: any) {
             console.error("Error updating project:", error);
             toast.error("Failed to update project");
@@ -138,7 +143,7 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
                 <div className="flex justify-between items-center mb-8">
                     <h1 className="text-3xl font-bold text-white">Edit Project</h1>
                     <button
-                        onClick={() => router.push(`/projects/${resolvedParams.id}`)}
+                        onClick={() => router.push(`/projects/${params.id}`)}
                         className="text-slate-400 hover:text-white transition-colors"
                     >
                         Cancel
@@ -224,7 +229,7 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
                     <div className="flex justify-end gap-4">
                         <button
                             type="button"
-                            onClick={() => router.push(`/projects/${resolvedParams.id}`)}
+                            onClick={() => router.push(`/projects/${params.id}`)}
                             className="px-4 py-2 text-slate-400 hover:text-white transition-colors"
                         >
                             Cancel
