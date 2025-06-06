@@ -28,7 +28,6 @@ export function AuthPage({ isSignIn }: { isSignIn: boolean }) {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    withCredentials: true
                 }
             );
             console.log(response.data);

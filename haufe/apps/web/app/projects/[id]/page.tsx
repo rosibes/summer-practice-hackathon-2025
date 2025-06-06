@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useAuth } from "@repo/common/auth-context";
+import { CommentSection } from "../../components/CommentSection";
 
 interface Project {
     id: string;
@@ -199,6 +200,8 @@ export default function ProjectDetails({ params }: { params: { id: string } }) {
                     <h2 className="text-xl font-semibold text-white mb-4">Description</h2>
                     <p className="text-slate-300 whitespace-pre-wrap">{project.description}</p>
                 </div>
+
+                <CommentSection projectId={project.id} />
             </div>
         </div>
     );
