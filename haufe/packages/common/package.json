@@ -7,7 +7,8 @@
   },
   "exports": {
     "./types": "./src/index.ts",
-    "./key": "./src/key.ts"
+    "./key": "./src/key.ts",
+    "./auth-context": "./src/auth-context.tsx"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",

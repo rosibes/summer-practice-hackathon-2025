@@ -33,7 +33,7 @@ projectRouter.post("/", authMiddleware, async (req, res) => {
             return
         }
 
-        const { title, description, repositoryUrl } = parsedData.data;
+        const { title, description, repositoryUrl, sourceCode } = parsedData.data;
         //@ts-ignore
         const userId = req.userId;
 
@@ -42,6 +42,7 @@ projectRouter.post("/", authMiddleware, async (req, res) => {
                 title,
                 description,
                 repositoryUrl,
+                sourceCode,
                 userId,
                 status: "pending"
             }
@@ -54,8 +55,11 @@ projectRouter.post("/", authMiddleware, async (req, res) => {
                 title: project.title,
                 description: project.description,
                 repositoryUrl: project.repositoryUrl,
+                sourceCode: project.sourceCode,
                 status: project.status,
-                createdAt: project.createdAt
+                createdAt: project.createdAt,
+                updatedAt: project.updatedAt,
+                userId: project.userId
             }
         });
         return

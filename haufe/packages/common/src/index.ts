@@ -1,4 +1,3 @@
-
 import zod, { z } from "zod"
 
 export const CreateUserSchema = zod.object({
@@ -16,6 +15,7 @@ export const ProjectSchema = zod.object({
     title: zod.string().min(1, "Title is required"),
     description: zod.string().optional(),
     repositoryUrl: zod.string().url().optional(),
+    sourceCode: zod.string().min(1, "Source code is required"),
 });
 
 
