@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, ReactElement } from "react";
+import { ReactNode } from "react";
 
 interface ButtonProps {
   variant: "primary" | "secondary";
@@ -9,8 +9,6 @@ interface ButtonProps {
   className?: string;
   appName?: string;
   onClick?: () => void;
-  startIcon?: ReactElement;
-  endIcon?: ReactElement;
   disabled?: boolean;
 }
 
@@ -33,8 +31,6 @@ export const Button = ({
   onClick,
   variant,
   size,
-  startIcon,
-  endIcon,
   disabled
 }: ButtonProps) => {
   return (
@@ -42,9 +38,7 @@ export const Button = ({
       onClick={onClick}
       className={`${defaultStyles} ${variantStyle[variant]} ${sizeStyles[size]} ${className} ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
     >
-      {startIcon ? <div className="pr-2 flex items-center">{startIcon}</div> : null}
       {children}
-      {endIcon}
     </button>
   );
 };
