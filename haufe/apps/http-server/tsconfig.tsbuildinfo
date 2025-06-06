@@ -1,0 +1,1 @@
+{"root":["./src/index.ts","./src/middlewares/user.ts","./src/routes/main.ts","./src/routes/project.ts","./src/routes/user.ts"],"version":"5.8.2"}

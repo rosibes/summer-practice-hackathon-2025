@@ -1,0 +1,30 @@
+{
+  "name": "@repo/common",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "exports": {
+    "./types": "./src/index.ts",
+    "./key": "./src/key.ts"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "@types/node": "^20.11.19",
+    "@types/react": "^18.2.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@types/dotenv": "^8.2.3",
+    "axios": "^1.6.7",
+    "dotenv": "^16.5.0",
+    "node": "^22.15.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "zod": "^3.24.4"
+  }
+}
